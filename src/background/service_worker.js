@@ -1,5 +1,5 @@
 const MENU_ID_COPY_CELL = "bc_copy_cell_value";
-const OFFSCREEN_DOCUMENT_PATH = "offscreen.html";
+const OFFSCREEN_DOCUMENT_PATH = "src/offscreen/offscreen.html";
 const OFFSCREEN_COPY_MESSAGE_TYPE = "offscreen_copy_text";
 const BC_MATCH_PATTERNS = [
   "https://businesscentral.dynamics.com/*",

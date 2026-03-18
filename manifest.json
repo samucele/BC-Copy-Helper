@@ -9,7 +9,7 @@
     "https://*.businesscentral.dynamics.com/*"
   ],
   "background": {
-    "service_worker": "service_worker.js"
+    "service_worker": "src/background/service_worker.js"
   },
   "content_scripts": [
     {
@@ -17,7 +17,7 @@
         "https://businesscentral.dynamics.com/*",
         "https://*.businesscentral.dynamics.com/*"
       ],
-      "js": ["content.js"],
+      "js": ["src/content/content.js"],
       "run_at": "document_idle",
       "all_frames": true
     }

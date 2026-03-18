@@ -6,12 +6,14 @@ It is currently intended for unpacked local installation in Chrome and Edge. The
 
 `BC Copy Helper` is not affiliated with Microsoft.
 
-## Files
+## Project Layout
 
 - `manifest.json`: extension metadata, permissions, and content script registration
-- `service_worker.js`: creates the context-menu item and forwards copy requests to the active tab
-- `content.js`: records the most recent right-click target and extracts a list-grid cell value
-- `offscreen.html` and `offscreen.js`: extension-owned clipboard path for reliable MV3 copying
+- `src/background/service_worker.js`: creates the context-menu item and forwards copy requests to the active tab
+- `src/content/content.js`: records the most recent right-click target and extracts a list-grid cell value
+- `src/offscreen/offscreen.html` and `src/offscreen/offscreen.js`: extension-owned clipboard path for reliable MV3 copying
+
+This is a good default structure for a small no-build browser extension: keep `manifest.json` at the extension root, then group runtime code by responsibility under `src/`.
 
 ## Install
 
