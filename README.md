@@ -36,7 +36,7 @@ This is a good default structure for a small no-build browser extension: keep `m
 - Business Central list-grid body cells only
 - Copying visible text from standard cells
 - Preferring the fuller `title` value when it differs from visible text
-- Basic hyperlink and `aria-label` fallbacks
+- Basic hyperlink fallbacks while filtering common action labels such as `Open record ...`
 - Top document and iframe scenarios through `all_frames`
 
 ## Permissions And Privacy
@@ -54,6 +54,7 @@ The extension does not send data to any server, include analytics, or make outbo
 - No options page or tenant configuration UI
 - No keyboard shortcuts
 - No support for non-grid surfaces such as headers, tiles, charts, or factboxes
+- Empty cells intentionally no-op when no safe cell value is found
 - Selector maintenance may be required if Microsoft changes the Business Central DOM
 
 ## Quick Test

@@ -70,7 +70,7 @@ function findSupportedGridCell(target) {
     return null;
   }
 
-  const cell = element.closest("td[role='gridcell'], [role='gridcell']");
+  const cell = element.closest("td[role='gridcell']");
   if (!cell) {
     return null;
   }
@@ -84,13 +84,16 @@ function findSupportedGridCell(target) {
 
 function extractCellValue(cell, target) {
   const candidates = [];
-  addCandidate(candidates, target);
-  addCandidate(candidates, target ? target.closest("[title], [aria-label], a") : null);
+  addCandidate(candidates, target ? target.closest("span.stringcontrol-read.value[title]") : null);
+  addCandidate(candidates, target ? target.closest("span.stringcontrol-read.value") : null);
+  addCandidate(candidates, target ? target.closest("a[title]") : null);
+  addCandidate(candidates, target ? target.closest("a") : null);
   addCandidate(candidates, cell.querySelector("span.stringcontrol-read.value[title]"));
   addCandidate(candidates, cell.querySelector("span.stringcontrol-read.value"));
   addCandidate(candidates, cell.querySelector("a[title]"));
   addCandidate(candidates, cell.querySelector("a"));
-  addCandidate(candidates, cell);
+  addCandidate(candidates, cell.querySelector("[title]"));
+  addCandidate(candidates, cell.querySelector("[aria-label]"));
 
   for (const candidate of candidates) {
     const bestValue = getBestCandidateValue(candidate);
@@ -115,7 +118,7 @@ function getBestCandidateValue(element) {
   const ariaLabel = getTrimmedAttribute(element, "aria-label");
   const text = getTrimmedText(element);
 
-  if (title && text && normalizeWhitespace(title) !== normalizeWhitespace(text)) {
+  if (title && text && normalizeWhitespace(title) !== normalizeWhitespace(text) && !looksLikeActionLabel(title)) {
     return title;
   }
 
@@ -123,11 +126,15 @@ function getBestCandidateValue(element) {
     return text;
   }
 
-  if (ariaLabel) {
+  if (title && !looksLikeActionLabel(title)) {
+    return title;
+  }
+
+  if (ariaLabel && !looksLikeActionLabel(ariaLabel)) {
     return ariaLabel;
   }
 
-  return title || null;
+  return null;
 }
 
 function getTrimmedAttribute(element, attributeName) {
@@ -155,4 +162,24 @@ function getTrimmedText(element) {
 
 function normalizeWhitespace(value) {
   return value.replace(/\s+/g, " ").trim();
+}
+
+function looksLikeActionLabel(value) {
+  const normalizedValue = normalizeWhitespace(value).toLowerCase();
+  if (!normalizedValue) {
+    return false;
+  }
+
+  return [
+    "open record",
+    "open item",
+    "show more",
+    "show details",
+    "look up",
+    "lookup",
+    "drill down",
+    "assist edit",
+    "choose",
+    "select"
+  ].some((phrase) => normalizedValue.startsWith(phrase));
 }
