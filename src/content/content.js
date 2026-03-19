@@ -117,24 +117,64 @@ function getBestCandidateValue(element) {
   const title = getTrimmedAttribute(element, "title");
   const ariaLabel = getTrimmedAttribute(element, "aria-label");
   const text = getTrimmedText(element);
+  const safeText = getSafeTextValue(text);
+  const safeTitle = getSafeAttributeValue(title);
+  const safeAriaLabel = getSafeAttributeValue(ariaLabel);
 
-  if (title && text && normalizeWhitespace(title) !== normalizeWhitespace(text) && !looksLikeActionLabel(title)) {
-    return title;
+  if (safeText && safeTitle && normalizeWhitespace(safeTitle) !== normalizeWhitespace(safeText)) {
+    if (isMetadataOnlyTitleSuffix(safeText, safeTitle)) {
+      return safeText;
+    }
+
+    return safeTitle;
   }
 
-  if (text) {
-    return text;
+  if (safeText) {
+    return safeText;
   }
 
-  if (title && !looksLikeActionLabel(title)) {
-    return title;
+  if (safeTitle) {
+    return safeTitle;
   }
 
-  if (ariaLabel && !looksLikeActionLabel(ariaLabel)) {
-    return ariaLabel;
+  if (safeAriaLabel) {
+    return safeAriaLabel;
   }
 
   return null;
+}
+
+function getSafeTextValue(value) {
+  const normalizedValue = normalizeWhitespace(value);
+
+  if (!normalizedValue || looksLikeBlankValue(normalizedValue)) {
+    return "";
+  }
+
+  return normalizedValue;
+}
+
+function getSafeAttributeValue(value) {
+  const normalizedValue = normalizeWhitespace(value);
+
+  if (!normalizedValue || looksLikeActionLabel(normalizedValue) || looksLikeBlankValue(normalizedValue)) {
+    return "";
+  }
+
+  return normalizedValue;
+}
+
+function isMetadataOnlyTitleSuffix(text, title) {
+  if (!text || !title || !title.startsWith(text)) {
+    return false;
+  }
+
+  const suffix = title.slice(text.length);
+  if (!suffix.trim()) {
+    return false;
+  }
+
+  return /^\s*(\([^)]*\)|\[[^\]]*\])(\s*(\([^)]*\)|\[[^\]]*\]))*$/i.test(suffix);
 }
 
 function getTrimmedAttribute(element, attributeName) {
@@ -171,6 +211,7 @@ function looksLikeActionLabel(value) {
   }
 
   return [
+    "open details",
     "open record",
     "open item",
     "show more",
@@ -182,4 +223,10 @@ function looksLikeActionLabel(value) {
     "choose",
     "select"
   ].some((phrase) => normalizedValue.startsWith(phrase));
+}
+
+function looksLikeBlankValue(value) {
+  const normalizedValue = normalizeWhitespace(value).toLowerCase();
+
+  return normalizedValue === "(blank)" || normalizedValue === "blank";
 }

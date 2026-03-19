@@ -1,0 +1,37 @@
+{
+  "baseUrl": "http://saas274cz/BC",
+  "tenant": "default",
+  "company": "CRONUS International Ltd.",
+  "credentials": {
+    "username": "",
+    "password": ""
+  },
+  "login": {
+    "usernameSelector": "input[name='UserName']",
+    "passwordSelector": "input[name='Password']",
+    "submitSelector": "button[type='submit'], input[type='submit']"
+  },
+  "scenarios": [
+    {
+      "name": "plain-text-list-cell",
+      "path": "?page=22",
+      "targetSelector": "td[role='gridcell'] span.stringcontrol-read.value",
+      "targetText": "10000",
+      "expectedClipboard": "10000"
+    },
+    {
+      "name": "title-backed-list-cell",
+      "path": "?page=27",
+      "targetSelector": "td[role='gridcell'] span.stringcontrol-read.value[title]",
+      "targetText": "Athens Desk",
+      "expectedClipboard": "Athens Desk"
+    },
+    {
+      "name": "hyperlink-list-cell",
+      "path": "?page=22",
+      "targetSelector": "td[role='gridcell'] a",
+      "targetText": "20000",
+      "expectedClipboard": "20000"
+    }
+  ]
+}
