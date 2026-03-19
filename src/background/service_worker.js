@@ -16,7 +16,7 @@ function ensureContextMenu() {
     chrome.contextMenus.create(
       {
         id: MENU_ID_COPY_CELL,
-        title: "Copy cell value",
+        title: "Copy BC cell value",
         contexts: ["all"],
         documentUrlPatterns: BC_MATCH_PATTERNS
       },

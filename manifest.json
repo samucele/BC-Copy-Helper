@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "BC Copy Helper",
   "version": "0.1.0",
-  "description": "Adds a right-click 'Copy cell value' action to Business Central list grids.",
+  "description": "Adds a right-click 'Copy BC cell value' action to Business Central list grids.",
   "permissions": ["contextMenus", "clipboardWrite", "offscreen"],
   "host_permissions": [
     "https://businesscentral.dynamics.com/*",

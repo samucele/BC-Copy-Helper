@@ -39,7 +39,7 @@ describe("background service worker", () => {
     const [menuOptions] = chrome.contextMenus.create.mock.calls[0];
     expect(menuOptions).toMatchObject({
       id: "bc_copy_cell_value",
-      title: "Copy cell value",
+      title: "Copy BC cell value",
       contexts: ["all"],
       documentUrlPatterns: expectedMatchPatterns
     });
