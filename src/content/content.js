@@ -210,6 +210,10 @@ function looksLikeActionLabel(value) {
     return false;
   }
 
+  if (/^(open|show|send|email|mail|call|dial|open in|launch|navigate to|go to|compose|write)\b/.test(normalizedValue)) {
+    return true;
+  }
+
   return [
     "open details",
     "open record",

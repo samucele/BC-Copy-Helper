@@ -132,6 +132,26 @@ describe("content script extraction", () => {
     expect(context.extractCellValue(cell, link)).toBe("-54");
   });
 
+  it("falls back to visible email text when the title is an email action", () => {
+    const { context, document } = setupContentScript(
+      `<a class="stringcontrol-read value" title="Send email to adatum@example.com">adatum@example.com</a>`
+    );
+    const cell = document.querySelector("td[role='gridcell']");
+    const link = document.querySelector("a");
+
+    expect(context.extractCellValue(cell, link)).toBe("adatum@example.com");
+  });
+
+  it("falls back to visible text when the title says open in outlook", () => {
+    const { context, document } = setupContentScript(
+      `<a class="stringcontrol-read value" title="Open in Outlook for adatum@example.com">adatum@example.com</a>`
+    );
+    const cell = document.querySelector("td[role='gridcell']");
+    const link = document.querySelector("a");
+
+    expect(context.extractCellValue(cell, link)).toBe("adatum@example.com");
+  });
+
   it("ignores blank helper titles when no meaningful text is present", () => {
     const { context, document } = setupContentScript(`<a title="Show more about &quot;&quot;"></a>`);
     const cell = document.querySelector("td[role='gridcell']");
